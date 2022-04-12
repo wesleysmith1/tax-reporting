@@ -1,0 +1,98 @@
+{{ block title }}Practice Round{{ endblock }}
+{{ block content }}
+
+    <table class="table table-bordered" style="text-align: center;">
+        <tbody>
+            <tr>
+                <td id="1">-</td>
+                <td id="2">-</td>
+                <td id="3">-</td>
+                <td id="4">-</td>
+                <td id="5">-</td>
+            </tr>
+            <tr>
+                <td id="6">-</td>
+                <td id="7">-</td>
+                <td id="8">-</td>
+                <td id="9">-</td>
+                <td id="10">-</td>
+            </tr>
+            <tr>
+                <td id="11">-</td>
+                <td id="12">-</td>
+                <td id="13">-</td>
+                <td id="14">-</td>
+                <td id="15">-</td>
+            </tr>
+            <tr>
+                <td id="16">-</td>
+                <td id="17">-</td>
+                <td id="18">-</td>
+                <td id="19">-</td>
+                <td id="20">-</td>
+            </tr>
+            <tr>
+                <td id="21">-</td>
+                <td id="22">-</td>
+                <td id="23">-</td>
+                <td id="24">-</td>
+                <td id="25">-</td>
+            </tr>
+        </tbody>    
+    </table>
+
+    <div class="mb-3 _formfield">
+    
+        <label class="col-form-label" for="grid_answer">Enter the number of 1's in the grid</label>
+        <div class="controls">
+            <input type="number" class="form-control" id="gridAnswer">
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary" type="button" onclick="submitGrid()">Submit</button>
+
+    <button id="submitBtn" type="submit" style="display: none;"></button>
+
+    <script>
+
+        var solution = null
+        
+        function buildGrid() {
+            solution = 0
+            for (let i = 0; i < 25; i++) {
+                let result = Math.floor(Math.random() * 2);
+                solution += result
+                $('#'+ (i+1)).text(result)
+            }
+        }
+
+        function submitGrid() {
+            let answer = $('#gridAnswer').val()
+
+            console.log(!answer);
+
+            // empty field
+            if (!answer)
+                return
+
+            liveSend(true)
+
+            // rebuild grid
+            $('#gridAnswer').val('')
+            buildGrid()
+        }
+
+        function liveRecv(data) {
+            if (data >= 3) {
+                $('#submitBtn').click()
+            }
+
+        }
+        
+
+        $(document).ready(function() { buildGrid() });
+    </script>
+
+
+{{ endblock }}

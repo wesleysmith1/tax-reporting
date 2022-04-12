@@ -1,0 +1,238 @@
+{{ block title }}<div style="margin-left: 170px;">Reporting</div>{{ endblock }}
+{{ block content }}
+
+    <style>
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 1;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgb(255, 99, 132);
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgb(255, 99, 132);
+            cursor: pointer;
+        }
+    </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <div style="width: 600px; margin: auto;">
+        <canvas id="myChart"></canvas>
+
+        <div style="margin-left: 50px;">
+            <div style="display: flex; justify-content: space-between; width: 550;">
+                <!-- <div>50%</div> -->
+                <!-- <div>Accuracy of Message</div> -->
+                <!-- <div>100%</div> -->
+            </div>
+            
+            <br>
+
+            <div class="slidecontainer" style="display: flex;">
+                <!-- <input type="range" min="0" max="{{income}}" value="0" step=.01 class="slider" id="accuracyInput" name="accuracy"> -->
+                <input type="range" min="0" max="{{income}}" value="0" step=.01 class="slider" id="accuracyInput" name="accuracy">
+            </div>
+        </div>
+
+        <br>
+        
+        <p style="text-align: center;">
+            If you report $<span id="selectedAccuracy">X</span> you will pay $<span id="selectedCost">Y</span> in taxes.
+        </p>
+
+        <p>Your income is {{player.payoff}}</p>
+
+        {{ formfields }}
+    
+        <button id="nextButton" class="btn btn-primary">Next</button>
+
+    </div>
+
+    <script>
+
+        var income = {{income}}
+
+        function moneyRound(num) {
+            // return Math.ceil(num * 100) / 100;
+            return num
+        }
+
+        function percentRound(num) {
+            return parseFloat(num.toFixed(2));
+        }
+
+        function curveFunction(x) {
+            return x * .40
+        }
+
+        function getPointData() {
+            let val = Number($('#accuracyInput').val())
+            let y = curveFunction(val)
+            return { x: val, y: curveFunction(val) }
+        }
+
+        function getCurveData() {
+            data = []
+            for (let step = 0; step <= income+.01; step+=.01) {
+                // Runs 5 times, with values of step 0 through 4.
+                data.push(curveFunction(step))
+                // data.push(step)
+            }
+            return data
+        }
+
+        function getCurveLabels() {
+            labels = []
+            for (let step = 0; step <= income+.01; step+=.01) {
+                // Runs 5 times, with values of step 0 through 4.
+                labels.push(percentRound(step))
+            }
+            return labels
+        }
+
+        var ctx = document.getElementById("myChart");   
+
+        let ldata = {
+            labels: getCurveLabels(),
+            datasets: [
+                    {
+                    data: getCurveData(),
+                    pointRadius: 0,
+                },
+                {
+                    type: 'scatter',
+                    data: [{
+                        x: .9,
+                        y: curveFunction(.9),
+                    }],
+                    pointRadius: 10,
+                    backgroundColor: 'rgb(255, 99, 132)',
+                }
+            ],
+            
+        };
+
+        let myChart = new Chart(ctx, {
+            type: 'line',
+            data: ldata,
+            plugins: {
+                datalabels: {
+                    labels: {
+                        title: {
+                            display: false
+                        },
+                    }
+                },
+                legend: {
+                    display: false
+                },
+            },
+            options: {
+                plugins: {
+                    legend: false
+                },
+                animation: false,
+                scales: {
+                    y: {
+                        grid: {
+                            display: true
+                        },  
+                        ticks: {
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, ticks) {
+                                if (value >= 0) {
+                                    return '$' + value;
+                                }
+                                return ''
+                            },
+
+                        },
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Reported Income',
+                        },
+                        grid: {
+                            display: true
+                        },
+                        ticks: {
+                            // autoSkip: true,
+                            // For a category axis, the val is the index so the lookup via getLabelForValue is needed
+                            callback: function(val, index) {
+                                // Hide every 2nd tick label
+                                return index % 2 === 0 ? '$' + this.getLabelForValue(val): '';
+                            },
+                            // display: function(val, index) {
+                            //     return true
+                            // }
+                        }
+
+                    }
+                }
+            }
+        });
+
+        $('#accuracyInput').on('input', (x) => {
+
+            let val = x.target.value
+
+            $('#selectedAccuracy').html(val)
+
+            let price = curveFunction(val).toFixed(2)
+
+            $('#selectedCost').html(price)
+
+            updateChart()
+            
+        });
+
+        function getRandomStart (income) {
+            income = income * 100 + 1 // make inclusive
+            let ret = Math.floor(Math.random() * income);
+            return ret / 100
+        }
+
+        function randomizeInput(income) {
+            // set random value to charge input
+            let rand_start = getRandomStart(income)
+            $('#accuracyInput').val(rand_start)
+        }
+
+        function updateChart() {
+            myChart.data.datasets[1].data.pop()
+            myChart.data.datasets[1].data.push(getPointData())
+
+            myChart.update()
+        }
+
+        randomizeInput(income)
+        updateChart()
+    </script>
+
+{{ endblock }}

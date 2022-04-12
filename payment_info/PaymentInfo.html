@@ -1,0 +1,22 @@
+{{ block title }}Thank you{{ endblock }}
+{{ block content }}
+
+    <p>
+        Thank you for participating in this study. 
+    </p>
+
+    <p>
+        You earned {{work_earnings}} for completing the ten-minute task and {{C.SURVEY_PYMT}} for completing the questionnaire for a total of {{player.total_earnings}}.
+    </p>
+
+    <p>Click "Continue" to be routed to Prolific with a completion code. </p>
+
+    <button class="btn btn-primary" type="button" onclick="route()">Continue</button>
+
+    <script>
+        function route() {
+            window.location.replace("https://app.prolific.co/submissions/complete?cc=9418D621")
+        }
+    </script>
+
+{{ endblock }}

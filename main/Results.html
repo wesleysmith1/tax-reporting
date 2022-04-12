@@ -1,0 +1,12 @@
+{{ block title }}Amount Earned{{ endblock }}
+{{ block content }}
+
+    <p>For your work you have earned {{player.payoff}}.</p>
+
+    <p>You will choose how much of your income to report subject ot a {{C.TAX_RATE}}% tax.</p>
+    
+    <p>When you are ready to proceed, click Next.</p>
+
+    {{ next_button }}
+
+{{ endblock }}

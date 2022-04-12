@@ -1,0 +1,17 @@
+{{ block title }}Honesty Oath{{ endblock }}
+{{ block content }}
+
+    <p>Hereby I do swear that my actions during this experiment will be due to principle of honesty. In particular, I swear not to lie in order to enrich myself.</p>
+    
+    <div class="form-check">
+        <label class="form-check-label" for="id_honesty_oath">
+          I agree
+        </label>
+        <input type="checkbox" class="form-check-input" id="id_honesty_oath" name="honesty_oath" required="" value="y">
+    </div>
+
+    <br>
+
+    {{ next_button }}
+
+{{ endblock }}

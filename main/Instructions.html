@@ -1,0 +1,47 @@
+{{ block title }}Instructions{{ endblock }}
+{{ block content }}
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+            <p>
+                In this study, you will earn money by completing a task using your computer interface. 
+                You will be presented with a 5x5 table. 
+                Each box will contain either a 1 or a 0. 
+                You are tasked with counting the number of 1’s within the table and entering that amount in the text box below the table. 
+                Once you have entered your final answer, you will click submit. Once an entry is submitted a new 5x5 table will populate and the task will be repeated. 
+                You may complete as many tables as you wish within a ten minute time frame. 
+            </p>
+
+            <!-- <img style="width: 100%" src="{{ static 'global/figure1.PNG' }}"/> -->
+
+            <P>
+                You will earn 9 cents for each correct entry. 
+            </P>
+
+            <p>
+                After ten minutes, a new screen will indicate that the time allotted to earn money is over. 
+            </p>
+
+            <p>
+                You will then be told how much money you earned in completing the task. 
+                You will make a decision on how much of your earned income to report subject to a 40% tax. 
+            </p>
+
+            <p>
+                Before making a decision, you will be given information concerning whether others who previously completed the task reported the full amount of their earnings. 
+            </p>
+
+            <p>
+                Once ready, you will use a slider to specify the amount of income you would like to report. 
+                Moving the indicator to the right will increase the amount you report and moving the indicator to the left will decrease the amount you report. 
+                A graph above the slider will indicate how much you will be paying in taxes based on how much you choose to report. 
+                Moving the indicator all the way to the right will mean that you want to report your full earnings. 
+            </p>
+
+            <!-- <img style="width: 100%" src="{{ static 'global/figure2.PNG' }}"/> -->
+        </div>
+    </div>
+    
+    {{ next_button }}
+
+{{ endblock }}
