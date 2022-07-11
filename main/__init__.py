@@ -145,5 +145,5 @@ class Reporting(Page):
         player.participant.work_earnings = player.payoff - ( player.reported * C.TAX_RATE / 100 )
 
 
-page_sequence = [Introduction, Instructions, Instructions2, HonestyOath, Practice, Work, Results, AdditionalInfo, Reporting]
-# page_sequence = [Introduction, Instructions, Instructions2, HonestyOath, Practice, Work, Results, Reporting]
+# page_sequence = [Introduction, Instructions, Instructions2, HonestyOath, Practice, Work, Results, AdditionalInfo, Reporting]
+page_sequence = [Introduction, Instructions, Instructions2, HonestyOath, Practice, Work, Results, Reporting]
