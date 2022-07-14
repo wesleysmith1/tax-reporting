@@ -146,4 +146,4 @@ class Reporting(Page):
 
 
 # page_sequence = [Introduction, Instructions, Instructions2, HonestyOath, Practice, Work, Results, AdditionalInfo, Reporting]
-page_sequence = [Introduction, Instructions, Instructions2, HonestyOath, Practice, Work, Results, Reporting]
+page_sequence = [Introduction, Instructions, Instructions2, Practice, Work, Results, Reporting]
